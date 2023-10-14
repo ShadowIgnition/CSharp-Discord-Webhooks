@@ -1,101 +1,42 @@
-# Unity Package Template Project
+# CSharp Discord Webhooks Library
 
-This repository serves as a template for creating custom Unity packages. It includes organized folders and assembly definitions for both runtime and editor scripts, streamlining the process of creating and managing Unity packages.
+This repository contains a C# library for interacting with Discord webhooks. It provides classes and structures for creating and handling webhook messages.
 
-## Usage Instructions
+If you find this repository helpful, please consider giving it a star. Your support is greatly appreciated!
 
-To create a new Unity project using this template, follow these steps:
+## Table of Contents
+- [Capabilities](#capabilities)
+- [Dependencies](#dependencies)
+- [Usage](#usage)
+- [Notes](#notes)
+- [License](#license)
 
-1. **Set Up A New Project**
-   - Open Unity Hub and create a new project.
-   - Choose a location for your project and select the desired template.
+## Capabilities
 
-2. **Clone the Repository and Organize Your Scripts**
-   - Clone this repository and when working on your package, ensure that your Git repository is set up within the `Assets` folder, like so: `Assets > YourPackageName > Runtime` or `Assets > YourPackageName > Editor`.
+- Send text messages and rich embeds.
+- Customize usernames and avatars.
+- Add images and thumbnails.
+- Embed files in messages.
+- Set colors for visual emphasis.
+- Include timestamps for context.
+- Input validation for compliance.
 
-3. **Update `package.json`**
-   - Navigate to `Assets > YourPackageName` and open the `package.json` file.
-   - Modify the details to match your package's information, such as name, version, and description [see more](#package.json-template).
+## Dependencies
 
-4. **Customize and Develop**
-   - Begin adding your own scripts and assets under the `Runtime` and `Editor` folders. This template provides a clear structure to help you organize your codebase.
+- [Newtonsoft.Json](https://www.newtonsoft.com/json): A popular high-performance JSON framework for .NET. It provides functionality for serializing, deserializing, querying, and manipulating JSON data.
 
-## Folder Structure
+## Usage
 
-The repository is structured as follows:
+The `HookObjectBuilder` class is responsible for creating a `HookObject` used in a Discord webhook. It provides methods for setting content, adding embeds, and configuring the username and avatar.
+The `WebhookHelper` class provides methods for sending webhook messages asynchronously. 
 
-- **Assets**
-  - **YourPackageName**
-    - Contains the `package.json` file.
-    - **Runtime**
-      - Contains scripts that are used during gameplay.
-    - **Editor**
-      - Contains scripts used for editor tools, inspectors, and custom editors.
+For a practical implementation example, you can refer to the included  [`WebhookExample.cs`](WebhookExample.cs) file in this repository.
 
-##  Package.json template:
+## Notes
+- For info on how to create webhooks, see [Creating Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+- For discord webhook documentation, see [Discord Webhooks Documentation](https://discord.com/developers/docs/resources/webhook)
+- For easy-to-use tool for building and sending Discord messages and embeds using webhook, see [discohook.org](https://discohook.org/)
 
-This file is utilized by Unity's Package Manager to identify and handle packages, streamlining their installation, updates, and removal within Unity projects.
+## License
 
-The following is a `package.json` template:
-```
-{
-  "name": "com.yourcompany.yourpackagename",
-  "displayName": "Your Package Name",
-  "description": "Description of your package.",
-  "version": "1.0.0",
-  "unity": "2019.4",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yourusername/Your-Repo.git"
-  },
-  "author": {
-    "name": "Your Name",
-    "email": "your.email@example.com",
-    "url": "https://github.com/yourusername"
-  },
-  "dependencies": {}
-}
-```
-
-To fill in this `package.json` template:
-
-1. **Edit the "name" field**:
-   - Replace `"com.yourcompany.yourpackagename"` with a unique identifier for your package. It's often in the format of `com.yourcompany.packagename`.
-
-2. **Edit the "displayName" field**:
-   - Replace `"Your Package Name"` with a user-friendly name for your package. This is what users will see.
-
-3. **Edit the "description" field**:
-   - Provide a brief, clear description of what your package does.
-
-4. **Update the "version" field**:
-   - Set the version of your package using semantic versioning (major.minor.patch).
-
-5. **Specify Unity compatibility**:
-   - Update the `"unity"` field with the version of Unity your package is compatible with.
-
-6. **Choose a license**:
-   - If you want to use a different license, replace `"MIT"` with the appropriate license.
-
-7. **Add repository details**:
-   - Replace the Git repository URL in the `"url"` field with your own repository's URL.
-
-8. **Update author information**:
-   - Replace `"Your Name"`, `"your.email@example.com"`, and `"https://github.com/yourusername"` with your own name, email, and GitHub profile URL.
-
-9. **Add dependencies** (if needed):
-    - Under `"dependencies"`, list any external packages or libraries your package relies on.
-  
-## Add your Unity Project via Package Manager
-
-To add your package to your Unity project via the Package Manager, follow these steps:
-
-1. Open your Unity project.
-2. Open the Package Manager window by going to `Window > Package Manager`.
-3. Click on the `+` button in the top left corner of the Package Manager window.
-4. Select "Add package from git URL...".
-5. In the text field that appears, enter the URL of your repository, adding `.git` to the end of the url. (Example: `https://github.com/ShadowIgnition/Unity-Package-Template.git`)
-6. Click the `Add` button.
-
-Your package will now be added to your project!
+This library is provided as-is under the terms of the [MIT License](LICENSE.md). Feel free to modify and adapt it to suit your needs.
