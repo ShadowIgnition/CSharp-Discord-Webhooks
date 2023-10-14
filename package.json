@@ -1,13 +1,12 @@
 {
-  "name": "com.shadowignition.unity.package.template",
-  "displayName": "Unity Package Template",
-  "description": "The Unity Package Template offers a well-structured foundation for creating custom Unity packages, complete with organized folders and assembly definitions for runtime and editor scripts, simplifying the development process.",
+  "name": "com.shadowignition.csharp.discord.webhooks",
+  "displayName": "CSharp Discord Webhooks Library",
+  "description": "This repository contains a C# library for interacting with Discord webhooks. It provides classes and structures for creating and handling webhook messages.",
   "version": "1.0.0",
-  "unity": "2017.1",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shadowignition/Unity-Package-Template.git"
+    "url": "git+https://github.com/ShadowIgnition/CSharp-Discord-Webhooks.git"
   },
   "author": {
     "name": "shadowignition",
