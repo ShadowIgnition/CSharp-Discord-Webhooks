@@ -1,0 +1,18 @@
+{
+  "name": "com.shadowignition.unity.package.template",
+  "displayName": "Unity Package Template",
+  "description": "The Unity Package Template offers a well-structured foundation for creating custom Unity packages, complete with organized folders and assembly definitions for runtime and editor scripts, simplifying the development process.",
+  "version": "1.0.0",
+  "unity": "2017.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowignition/Unity-Package-Template.git"
+  },
+  "author": {
+    "name": "shadowignition",
+    "email": "43722770+ShadowIgnition@users.noreply.github.com",
+    "url": "https://github.com/shadowignition"
+  },
+  "dependencies": {}
+}
