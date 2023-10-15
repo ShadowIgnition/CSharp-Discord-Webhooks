@@ -2,11 +2,10 @@
 
 namespace SI.Discord.Webhooks
 {
-
     /// <summary>
     /// Represents an interface for objects that can be converted to a <see cref="JObject"/>.
     /// </summary>
-    public interface IHookContainer
+    public interface IConvertibleToJObject
     {
         /// <summary>
         /// Converts the implementing object to a <see cref="JObject"/>.

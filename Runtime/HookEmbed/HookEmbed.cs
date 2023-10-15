@@ -9,7 +9,7 @@ namespace SI.Discord.Webhooks
     /// <summary>
     /// Represents an embedded message hook container.
     /// </summary>
-    public struct HookEmbed : IHookContainer
+    public struct HookEmbed : IConvertibleToJObject
     {
         /// <summary>
         /// The title of the embedded message.

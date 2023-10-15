@@ -3,11 +3,10 @@ using System;
 
 namespace SI.Discord.Webhooks
 {
-
     /// <summary>
     /// Represents an author in an embedded message hook.
     /// </summary>
-    public struct HookEmbedAuthor : IHookContainer
+    public struct HookEmbedAuthor : IConvertibleToJObject
     {
         /// <summary>
         /// Initializes a new instance of the HookEmbedAuthor struct with optional author information.
