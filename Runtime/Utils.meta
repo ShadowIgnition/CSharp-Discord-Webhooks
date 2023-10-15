@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Runtime/Utils/Colors.meta
-guid: fd08d852b81658548a97d344e5d4b978
-========
-guid: 26f149097b0b4a241822c0d98e62b206
->>>>>>>> de25464 (Version 0.0.1):Runtime/Utils.meta
+guid: 2ef157d6b5428b14a89d7c927910961c
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
