@@ -22,6 +22,7 @@ namespace SI.Discord.Webhooks
                 .SetColor(System.Drawing.Color.IndianRed)
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
                 .SetThumbnailURL(THUMBNAIL_URL)
+                .SetFileURL("https://github.com/ShadowIgnition/CSharp-Discord-Webhooks/blob/main/README.md")
                 .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://shadowignition.github.io", AVATAR_URL));
 
             // Build a HookObject with message details.

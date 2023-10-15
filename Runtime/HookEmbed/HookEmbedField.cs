@@ -7,7 +7,7 @@ namespace SI.Discord.Webhooks
     /// <summary>
     /// Represents an embed field for use in a hook.
     /// </summary>
-    public struct HookEmbedField : IHookContainer
+    public struct HookEmbedField : IConvertibleToJObject
     {
         /// <summary>
         /// Field name, required.

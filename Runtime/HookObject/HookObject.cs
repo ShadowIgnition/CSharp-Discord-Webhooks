@@ -10,7 +10,7 @@ namespace SI.Discord.Webhooks
     /// <summary>
     /// Represents a structure for creating and handling hook objects.
     /// </summary>
-    public struct HookObject : IHookContainer
+    public struct HookObject : IConvertibleToJObject
     {
         public const int MAX_EMBEDS = 10;
 
