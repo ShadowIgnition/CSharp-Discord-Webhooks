@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace SI.Discord.Webhooks
 {
-
     /// <summary>
     /// Represents a builder for creating a HookObject used in a Discord webhook.
     /// </summary>
@@ -34,77 +33,58 @@ namespace SI.Discord.Webhooks
         /// <para>If <see cref="m_Embeds.Count"/> is equal to <see cref="HookObject.MAX_EMBEDS"/> throws <see cref="NotSupportedException"/>.</para>
         /// </summary>
         /// <param name="embed">The <see cref="HookEmbed"/> to add.</param>
-        /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
-        /// <exception cref="NotSupportedException">Thrown when trying to add more than the maximum allowed number of embedded files.</exception>
-        public HookObjectBuilder AddEmbed(HookEmbed embed)
+        public Result<string> TryAddEmbed(HookEmbed embed)
         {
             if (AtEmbedLimit)
             {
-                throw new NotSupportedException($"More than {HookObject.MAX_EMBEDS} Embedded files is not supported on a discord webhook");
+                return $"More than {HookObject.MAX_EMBEDS} Embedded files is not supported on a discord webhook";
+            }
+
+            if (m_EmbedsDisabled)
+            {
+                return $"Embeds disabled, re-enable to add embeds";
             }
 
             m_Embeds.Add(embed);
-            return this;
+            return Result<string>.Success;
         }
 
-        /// <summary>
-        /// Sets the username for the HookObject being built.
-        /// <para>If the provided username is invalid, null or whitespace, or exceeds 80 characters throws a <see cref="ArgumentException"/>.</para>
-        /// </summary>
-        /// <param name="username">The username to set.</param>
-        /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
-        /// <exception cref="ArgumentException">Thrown if the provided username is invalid, null or whitespace, or exceeds 80 characters.</exception>
-        public HookObjectBuilder SetUsername(string username)
+        public Result<string> TrySetUsername(string username)
         {
             if (m_UsernamesInvalidContains.Contains(username.ToLower()))
             {
-                throw new ArgumentException("Username cannot contain invalid text");
+                return "Username cannot contain invalid text";
             }
 
             if (m_UsernamesInvalidEquals.Contains(username.ToLower()))
             {
-                throw new ArgumentException("Username cannot be: " + username);
+                return "Username cannot be: " + username;
             }
 
             if (string.IsNullOrWhiteSpace(username))
             {
-                throw new ArgumentException("Username cannot be Null Or White Space");
+                return "Username cannot be Null Or White Space";
             }
 
             if (username.Length > 80)
             {
-                throw new ArgumentException("Username length cannot be greater than 80");
+                return "Username length cannot be greater than 80";
             }
 
             m_Username = username;
-            return this;
+            return Result<string>.Success;
         }
-
-        /// <summary>
-        /// An array of strings containing invalid text that should not be part of a username.
-        /// </summary>
-        readonly string[] m_UsernamesInvalidContains = new string[]
-        {
-        "discord", "clyde", "system message", "```"
-        };
-
-        /// <summary>
-        /// An array of strings containing usernames that are considered invalid.
-        /// </summary>
-        readonly string[] m_UsernamesInvalidEquals = new string[]
-        {
-        "here", "everyone"
-        };
 
         /// <summary>
         /// Sets the avatar URL for the HookObject.
         /// </summary>
         /// <param name="avatarUrl">The avatar URL to set.</param>
         /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
-        public HookObjectBuilder SetAvatarUrl(string avatarUrl)
+        public Result<string> TrySetAvatarUrl(string avatarUrl)
         {
-            m_AvatarUrl = URiHelper.EazyURi(avatarUrl);
-            return this;
+            Result<string> result = URiHelper.TryParseURI(avatarUrl, out Uri resultURI);
+            m_AvatarUrl = resultURI;
+            return result;
         }
 
         /// <summary>
@@ -135,7 +115,7 @@ namespace SI.Discord.Webhooks
         /// <summary>
         /// The list of embedded files in the HookObject.
         /// </summary>
-        List<HookEmbed> m_Embeds = new List<HookEmbed>();
+        readonly List<HookEmbed> m_Embeds = new();
 
         /// <summary>
         /// The username associated with the HookObject.
@@ -151,5 +131,21 @@ namespace SI.Discord.Webhooks
         /// A flag indicating whether embedded files are disabled for the HookObject.
         /// </summary>
         bool m_EmbedsDisabled = false;
+
+        /// <summary>
+        /// An array of strings containing invalid text that should not be part of a username.
+        /// </summary>
+        readonly string[] m_UsernamesInvalidContains = new string[]
+        {
+            "discord", "clyde", "system message", "```"
+        };
+
+        /// <summary>
+        /// An array of strings containing usernames that are considered invalid.
+        /// </summary>
+        readonly string[] m_UsernamesInvalidEquals = new string[]
+        {
+            "here", "everyone"
+        };
     }
 }

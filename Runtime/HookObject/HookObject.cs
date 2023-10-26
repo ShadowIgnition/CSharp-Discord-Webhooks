@@ -13,6 +13,7 @@ namespace SI.Discord.Webhooks
     public struct HookObject : IConvertibleToJObject
     {
         public const int MAX_EMBEDS = 10;
+        public const int MAX_USERNAME_LENGTH = 80;
 
         /// <summary>
         /// Main content of the hook.
@@ -88,12 +89,12 @@ namespace SI.Discord.Webhooks
             }
 
             byte[] fileBytes;
-            using (FileStream fs = new FileStream(path.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = new(path.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 fileBytes = new byte[fs.Length];
                 fs.Read(fileBytes, 0, (int)fs.Length);
             }
-            ByteArrayContent fileContent = new ByteArrayContent(fileBytes);
+            ByteArrayContent fileContent = new(fileBytes);
             fileContent.Headers.Add("Content-Type", type);
             formDataContent.Add(fileContent, $"files[{m_EmbeddedFilesCount}]", name);
             m_EmbeddedFilesCount++;
@@ -103,7 +104,7 @@ namespace SI.Discord.Webhooks
         /// Converts the HookObject to a JSON object.
         /// </summary>
         /// <returns>A JSON object representing the HookObject.</returns>
-        public JObject ToJObject()
+        public readonly JObject ToJObject()
         {
             JObject root = new();
 

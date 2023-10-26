@@ -41,17 +41,6 @@ namespace SI.Discord.Webhooks
         }
 
         /// <summary>
-        /// Sets the URL of the embed.
-        /// </summary>
-        /// <param name="url">The URL to set.</param>
-        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public HookEmbedBuilder SetURL(string url)
-        {
-            m_Url = URiHelper.EazyURi(url);
-            return this;
-        }
-
-        /// <summary>
         /// Sets the color of the embed.
         /// </summary>
         /// <param name="color">The color to set.</param>
@@ -119,18 +108,23 @@ namespace SI.Discord.Webhooks
         }
 
         /// <summary>
+        /// Sets the URL of the embed.
+        /// </summary>
+        /// <param name="url">The URL to set.</param>
+        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
+        public Result<string> TrySetURL(string url)
+        {
+            return URiHelper.TryParseURI(url, out m_Url);
+        }
+
+        /// <summary>
         /// Sets the image URL of the embed.
         /// </summary>
         /// <param name="imageURL">The image URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public HookEmbedBuilder SetImageURL(string imageURL)
+        public Result<string> TrySetImageURL(string imageURL)
         {
-            m_ImageURL = URiHelper.EazyURi(imageURL);
-            if (m_ImageURL != null && m_ThumbnailURL != null && m_ImageURL == m_ThumbnailURL)
-            {
-                Console.WriteLine("Same image attached, Discord webhook may not display both images.");
-            }
-            return this;
+            return URiHelper.TryParseURI(imageURL, out m_ImageURL);
         }
 
         /// <summary>
@@ -138,14 +132,9 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="thumbnailURL">The thumbnail URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public HookEmbedBuilder SetThumbnailURL(string thumbnailURL)
+        public Result<string> TrySetThumbnailURL(string thumbnailURL)
         {
-            m_ThumbnailURL = URiHelper.EazyURi(thumbnailURL);
-            if (m_ImageURL != null && m_ThumbnailURL != null && m_ImageURL == m_ThumbnailURL)
-            {
-                Console.WriteLine("Same image attached, Discord webhook may not display both images.");
-            }
-            return this;
+            return URiHelper.TryParseURI(thumbnailURL, out m_ThumbnailURL);
         }
 
         /// <summary>
@@ -153,15 +142,19 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="fileURL">The file URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public HookEmbedBuilder SetFileURL(string fileURL)
+        public Result<string> TrySetFileURL(string fileURL)
         {
-            m_FileURL = URiHelper.EazyURi(fileURL);
-            if (!m_FileURL.IsFile)
+            Result<string> result = URiHelper.TryParseURI(fileURL, out m_FileURL);
+            if (result.Failed)
             {
-                m_FileURL = null;
-                Console.WriteLine("The provided URL is not a file.");
+                if (!m_FileURL.IsFile)
+                {
+                    m_FileURL = null;
+                    return "The provided URL is not a file.";
+                }
             }
-            return this;
+
+            return Result<string>.Success;
         }
 
         /// <summary>
