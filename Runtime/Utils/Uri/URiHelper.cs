@@ -4,19 +4,20 @@ namespace SI.Discord.Webhooks
 {
     public static class URiHelper
     {
-        public static Uri EazyURi(string url)
+        public static Result<Exception> TryParseURI(string uri, out Uri result)
         {
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(uri))
             {
-                return null;
+                result = null;
+                return new ArgumentNullException("URI cannot be null or empty");
             }
 
-            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            if (!Uri.TryCreate(uri, UriKind.Absolute, out result))
             {
-                Console.WriteLine("Not a url: " + url);
+                return new Exception($"Invalid URI {uri} link");
             }
 
-            return uri;
+            return Result<Exception>.Success;
         }
     }
 }

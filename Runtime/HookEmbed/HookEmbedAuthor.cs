@@ -18,14 +18,13 @@ namespace SI.Discord.Webhooks
         /// <exception cref="ArgumentException">Thrown when all arguments (name, url, and iconURL) are null.</exception>
         public HookEmbedAuthor(string name, string url, string iconURL)
         {
-            if (name == null && url == null && iconURL == null)
-            {
-                throw new ArgumentException("At least one argument must be non-null");
-            }
-
             Name = name;
-            URL = URiHelper.EazyURi(url);
-            Icon_URL = URiHelper.EazyURi(iconURL);
+
+            URiHelper.TryParseURI(url, out Uri resultURL);
+            URL = resultURL;
+
+            URiHelper.TryParseURI(iconURL, out resultURL);
+            Icon_URL = resultURL;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace SI.Discord.Webhooks
         /// Converts the HookEmbedAuthor object to a JObject for serialization.
         /// </summary>
         /// <returns>A JObject containing the author information.</returns>
-        public JObject ToJObject()
+        public readonly JObject ToJObject()
         {
             JObject root = new();
 

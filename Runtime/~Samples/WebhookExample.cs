@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace SI.Discord.Webhooks
 {
@@ -9,11 +11,15 @@ namespace SI.Discord.Webhooks
     /// </summary>
     public static class WebhookExample
     {
+        private const string Username = "BonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnie";
+
         /// <summary>
         /// Sends an example message using a webhook asynchronously.
         /// </summary>
         public static async Task SendExample(string webhookURL)
         {
+            string tempFilePath = Path.GetTempFileName();
+
             // Create an embed for the message.
             HookEmbedBuilder embed = new HookEmbedBuilder()
                 .SetDescription("🚀 Let the automation begin! 🤖🌟")
@@ -21,22 +27,40 @@ namespace SI.Discord.Webhooks
                 .SetTitle("🎉 Webhooks are here!")
                 .SetColor(System.Drawing.Color.IndianRed)
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
-                .SetThumbnailURL(THUMBNAIL_URL)
-                .SetFileURL("https://github.com/ShadowIgnition/CSharp-Discord-Webhooks/blob/main/README.md")
-                .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://shadowignition.github.io", AVATAR_URL));
+                .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks", AVATAR_URL));
 
-            // Build a HookObject with message details.
-            HookObjectBuilder hookObjectBuilder = new HookObjectBuilder()
-                .SetUsername("Bonnie")
-                .SetContent("**This is a content message sent via a webhook!**")
-                .SetAvatarUrl(AVATAR_URL)
-                .AddEmbed(embed.Build());
+            Result<Exception> result = embed.TrySetThumbnailURL(THUMBNAIL_URL);
+            if (result.Failed)
+            {
+                Debug.LogError(result.Message);
+            }
 
-            // Build the HookObject.
+            result = embed.TrySetFileURL(tempFilePath);
+            if (result.Failed)
+            {
+                Debug.LogError(result.Message);
+            }
+
+            HookObjectBuilder hookObjectBuilder = new HookObjectBuilder();
+            result = hookObjectBuilder.TrySetUsername(Username);
+            if (result.Failed)
+            {
+                Debug.LogError(result.Message);
+            }
+            result = hookObjectBuilder.TryAddEmbed(embed.Build());
+            if (result.Failed)
+            {
+                Debug.LogError(result.Message);
+            }
+
             HookObject hookObject = hookObjectBuilder.Build();
 
-            // Send the webhook asynchronously.
-            await WebhookSender.SendHookAsync(webhookURL, hookObject);
+            // create service
+            using (WebhookService webhookService = new WebhookService(webhookURL))
+            {
+                HttpResponseMessage a = await webhookService.SendWebhookAsync(hookObject);
+                Debug.Log(a.Content.ToString());
+            }
         }
 
         /// <summary>

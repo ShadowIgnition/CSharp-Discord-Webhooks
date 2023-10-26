@@ -99,7 +99,7 @@ namespace SI.Discord.Webhooks
         /// Converts the HookEmbed object to a JObject.
         /// </summary>
         /// <returns>The JObject representing the HookEmbed object.</returns>
-        public JObject ToJObject()
+        public readonly JObject ToJObject()
         {
             JObject root = new();
 

@@ -53,7 +53,7 @@ namespace SI.Discord.Webhooks
         /// Converts the HookEmbedField to a JObject.
         /// </summary>
         /// <returns>A JObject representing the HookEmbedField.</returns>
-        public JObject ToJObject()
+        public readonly JObject ToJObject()
         {
             JObject root = new JObject();
             if (!string.IsNullOrEmpty(Name))

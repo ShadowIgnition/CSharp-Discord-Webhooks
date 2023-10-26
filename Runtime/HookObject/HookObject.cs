@@ -13,6 +13,7 @@ namespace SI.Discord.Webhooks
     public struct HookObject : IConvertibleToJObject
     {
         public const int MAX_EMBEDS = 10;
+        public const int MAX_USERNAME_LENGTH = 80;
 
         /// <summary>
         /// Main content of the hook.
@@ -103,7 +104,7 @@ namespace SI.Discord.Webhooks
         /// Converts the HookObject to a JSON object.
         /// </summary>
         /// <returns>A JSON object representing the HookObject.</returns>
-        public JObject ToJObject()
+        public readonly JObject ToJObject()
         {
             JObject root = new();
 
