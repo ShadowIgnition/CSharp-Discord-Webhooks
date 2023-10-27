@@ -33,46 +33,46 @@ namespace SI.Discord.Webhooks
         /// <para>If <see cref="m_Embeds.Count"/> is equal to <see cref="HookObject.MAX_EMBEDS"/> throws <see cref="NotSupportedException"/>.</para>
         /// </summary>
         /// <param name="embed">The <see cref="HookEmbed"/> to add.</param>
-        public Result<Exception> TryAddEmbed(HookEmbed embed)
+        public Result<string> TryAddEmbed(HookEmbed embed)
         {
             if (AtEmbedLimit)
             {
-                return new NotSupportedException($"More than {HookObject.MAX_EMBEDS} Embedded files is not supported on a discord webhook");
+                return $"More than {HookObject.MAX_EMBEDS} Embedded files is not supported on a discord webhook";
             }
 
             if (m_EmbedsDisabled)
             {
-                return new Exception($"Embeds disabled, re-enable to add embeds");
+                return $"Embeds disabled, re-enable to add embeds";
             }
 
             m_Embeds.Add(embed);
-            return Result<Exception>.Success;
+            return Result<string>.Success;
         }
 
-        public Result<Exception> TrySetUsername(string username)
+        public Result<string> TrySetUsername(string username)
         {
             if (m_UsernamesInvalidContains.Contains(username.ToLower()))
             {
-                return new ArgumentException("Username cannot contain invalid text");
+                return "Username cannot contain invalid text";
             }
 
             if (m_UsernamesInvalidEquals.Contains(username.ToLower()))
             {
-                return new ArgumentException("Username cannot be: " + username);
+                return "Username cannot be: " + username;
             }
 
             if (string.IsNullOrWhiteSpace(username))
             {
-                return new ArgumentException("Username cannot be Null Or White Space");
+                return "Username cannot be Null Or White Space";
             }
 
             if (username.Length > 80)
             {
-                return new ArgumentException("Username length cannot be greater than 80");
+                return "Username length cannot be greater than 80";
             }
 
             m_Username = username;
-            return Result<Exception>.Success;
+            return Result<string>.Success;
         }
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="avatarUrl">The avatar URL to set.</param>
         /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
-        public Result<Exception> TrySetAvatarUrl(string avatarUrl)
+        public Result<string> TrySetAvatarUrl(string avatarUrl)
         {
-            Result<Exception> result = URiHelper.TryParseURI(avatarUrl, out Uri resultURI);
+            Result<string> result = URiHelper.TryParseURI(avatarUrl, out Uri resultURI);
             m_AvatarUrl = resultURI;
             return result;
         }
@@ -115,7 +115,7 @@ namespace SI.Discord.Webhooks
         /// <summary>
         /// The list of embedded files in the HookObject.
         /// </summary>
-        readonly List<HookEmbed> m_Embeds = new List<HookEmbed>();
+        readonly List<HookEmbed> m_Embeds = new();
 
         /// <summary>
         /// The username associated with the HookObject.

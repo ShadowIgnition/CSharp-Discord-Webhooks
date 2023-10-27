@@ -48,7 +48,7 @@ namespace SI.Discord.Webhooks
             string jsonStr = json.ToString();
 
             // Create a StringContent with JSON data
-            StringContent jsonContent = new StringContent(jsonStr, Encoding.UTF8, "application/json");
+            StringContent jsonContent = new(jsonStr, Encoding.UTF8, "application/json");
 
             // Add JSON content to formData
             formData.Add(jsonContent, "payload_json");

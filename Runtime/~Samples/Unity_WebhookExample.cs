@@ -6,23 +6,33 @@ using UnityEngine;
 
 namespace SI.Discord.Webhooks
 {
-
     /// <summary>
     /// A static class for demonstrating webhook functionality.
     /// </summary>
-    public static class WebhookExample
+    public static class Unity_WebhookExample
     {
-        private const string Username = "BonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnieBonnie";
-
         /// <summary>
         /// Sends an example message using a webhook asynchronously.
         /// </summary>
         public static async Task SendExample(string webhookURL)
         {
+            BuildHookEmbed(out HookEmbedBuilder embed);
+            BuildHookObject(embed, out HookObject hookObject);
+
+            // Create service
+            using (WebhookService webhookService = new(webhookURL))
+            {
+                HttpResponseMessage responseMessage = await webhookService.SendWebhookAsync(hookObject);
+                Debug.Log(responseMessage.IsSuccessStatusCode);
+            }
+        }
+
+        static HookEmbedBuilder BuildHookEmbed(out HookEmbedBuilder embed)
+        {
             string tempFilePath = Path.GetTempFileName();
 
             // Create an embed for the message.
-            HookEmbedBuilder embed = new HookEmbedBuilder()
+            embed = new HookEmbedBuilder()
                 .SetDescription("🚀 Let the automation begin! 🤖🌟")
                 .SetTimestamp(DateTime.UtcNow)
                 .SetTitle("🎉 Webhooks are here!")
@@ -30,7 +40,7 @@ namespace SI.Discord.Webhooks
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
                 .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks", AVATAR_URL));
 
-            Result<Exception> result = embed.TrySetThumbnailURL(THUMBNAIL_URL);
+            Result<string> result = embed.TrySetThumbnailURL(THUMBNAIL_URL);
             if (result.Failed)
             {
                 Debug.LogError(result.Message);
@@ -42,26 +52,25 @@ namespace SI.Discord.Webhooks
                 Debug.LogError(result.Message);
             }
 
-            HookObjectBuilder hookObjectBuilder = new HookObjectBuilder();
-            result = hookObjectBuilder.TrySetUsername(Username);
+            return embed;
+        }
+
+        static void BuildHookObject(HookEmbedBuilder embed, out HookObject hookObject)
+        {
+            HookObjectBuilder hookObjectBuilder = new();
+            Result<string> result = hookObjectBuilder.TrySetUsername("discord");
             if (result.Failed)
             {
                 Debug.LogError(result.Message);
             }
+
             result = hookObjectBuilder.TryAddEmbed(embed.Build());
             if (result.Failed)
             {
                 Debug.LogError(result.Message);
             }
 
-            HookObject hookObject = hookObjectBuilder.Build();
-
-            // create service
-            using (WebhookService webhookService = new WebhookService(webhookURL))
-            {
-                HttpResponseMessage a = await webhookService.SendWebhookAsync(hookObject);
-                Debug.Log(a.Content.ToString());
-            }
+            hookObject = hookObjectBuilder.Build();
         }
 
         /// <summary>
@@ -73,15 +82,5 @@ namespace SI.Discord.Webhooks
         /// The URL for the thumbnail.
         /// </summary>
         const string THUMBNAIL_URL = "https://assets-global.website-files.com/5f9072399b2640f14d6a2bf4/643d9e196f9a672e57e79b3f_Community%20Onboarding_Blog%20Header_blog%20header-p-500.jpg";
-
-        /// <summary>
-        /// Placeholder for the image path.
-        /// </summary>
-        const string IMAGE_PATH = "PATH";
-
-        /// <summary>
-        /// Placeholder for the file path.
-        /// </summary>
-        const string FILE_PATH = "PATH";
     }
 }

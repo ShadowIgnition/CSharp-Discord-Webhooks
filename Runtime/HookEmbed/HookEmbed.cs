@@ -125,8 +125,8 @@ namespace SI.Discord.Webhooks
 
             if (!string.IsNullOrEmpty(Footer))
             {
-                JObject footer = new JObject
-            {
+                JObject footer = new()
+                {
                 { "text", Footer }
             };
                 root.Add(nameof(Footer).ToLower(), footer);

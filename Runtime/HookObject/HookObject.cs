@@ -89,12 +89,12 @@ namespace SI.Discord.Webhooks
             }
 
             byte[] fileBytes;
-            using (FileStream fs = new FileStream(path.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = new(path.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 fileBytes = new byte[fs.Length];
                 fs.Read(fileBytes, 0, (int)fs.Length);
             }
-            ByteArrayContent fileContent = new ByteArrayContent(fileBytes);
+            ByteArrayContent fileContent = new(fileBytes);
             fileContent.Headers.Add("Content-Type", type);
             formDataContent.Add(fileContent, $"files[{m_EmbeddedFilesCount}]", name);
             m_EmbeddedFilesCount++;

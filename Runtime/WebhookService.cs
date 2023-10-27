@@ -18,12 +18,6 @@ namespace SI.Discord.Webhooks
             m_WebhookClient = webhookClient;
         }
 
-        public static void SendWebhook(Uri requestUri, HookObject hookObject) => SendWebhook(requestUri.AbsoluteUri, hookObject);
-        public static void SendWebhook(string requestUri, HookObject hookObject)
-        {
-            _ = SendWebhookAsync(requestUri, hookObject);
-        }
-
         public async static Task<HttpResponseMessage> SendWebhookAsync(Uri requestUri, HookObject hookObject) => await SendWebhookAsync(requestUri.AbsoluteUri, hookObject);
         public async static Task<HttpResponseMessage> SendWebhookAsync(string requestUri, HookObject hookObject)
         {
@@ -63,11 +57,6 @@ namespace SI.Discord.Webhooks
             }
             WebhookRequest request = new(hookObject);
             return await m_WebhookClient.Post(m_RequestURI, request);
-        }
-
-        public void SendWebhook(HookObject hookObject)
-        {
-            _ = SendWebhookAsync(hookObject);
         }
 
         public void Dispose()

@@ -112,7 +112,7 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="url">The URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public Result<Exception> TrySetURL(string url)
+        public Result<string> TrySetURL(string url)
         {
             return URiHelper.TryParseURI(url, out m_Url);
         }
@@ -122,7 +122,7 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="imageURL">The image URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public Result<Exception> TrySetImageURL(string imageURL)
+        public Result<string> TrySetImageURL(string imageURL)
         {
             return URiHelper.TryParseURI(imageURL, out m_ImageURL);
         }
@@ -132,7 +132,7 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="thumbnailURL">The thumbnail URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public Result<Exception> TrySetThumbnailURL(string thumbnailURL)
+        public Result<string> TrySetThumbnailURL(string thumbnailURL)
         {
             return URiHelper.TryParseURI(thumbnailURL, out m_ThumbnailURL);
         }
@@ -142,19 +142,19 @@ namespace SI.Discord.Webhooks
         /// </summary>
         /// <param name="fileURL">The file URL to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
-        public Result<Exception> TrySetFileURL(string fileURL)
+        public Result<string> TrySetFileURL(string fileURL)
         {
-            Result<Exception> result = URiHelper.TryParseURI(fileURL, out m_FileURL);
+            Result<string> result = URiHelper.TryParseURI(fileURL, out m_FileURL);
             if (result.Failed)
             {
                 if (!m_FileURL.IsFile)
                 {
                     m_FileURL = null;
-                    return new Exception("The provided URL is not a file.");
+                    return "The provided URL is not a file.";
                 }
             }
 
-            return Result<Exception>.Success;
+            return Result<string>.Success;
         }
 
         /// <summary>
