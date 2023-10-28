@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
 
     /// <summary>

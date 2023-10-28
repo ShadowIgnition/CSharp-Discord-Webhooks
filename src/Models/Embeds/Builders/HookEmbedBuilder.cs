@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SI.Discord.Webhooks.Utilities;
+using System;
 using System.Collections.Generic;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
-
     /// <summary>
     /// A builder class for creating Discord webhook embeds.
     /// </summary>
@@ -114,7 +114,7 @@ namespace SI.Discord.Webhooks
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public Result<string> TrySetURL(string url)
         {
-            return URiHelper.TryParseURI(url, out m_Url);
+            return URiUtils.TryParseURI(url, out m_Url);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace SI.Discord.Webhooks
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public Result<string> TrySetImageURL(string imageURL)
         {
-            return URiHelper.TryParseURI(imageURL, out m_ImageURL);
+            return URiUtils.TryParseURI(imageURL, out m_ImageURL);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace SI.Discord.Webhooks
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public Result<string> TrySetThumbnailURL(string thumbnailURL)
         {
-            return URiHelper.TryParseURI(thumbnailURL, out m_ThumbnailURL);
+            return URiUtils.TryParseURI(thumbnailURL, out m_ThumbnailURL);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace SI.Discord.Webhooks
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public Result<string> TrySetFileURL(string fileURL)
         {
-            Result<string> result = URiHelper.TryParseURI(fileURL, out m_FileURL);
+            Result<string> result = URiUtils.TryParseURI(fileURL, out m_FileURL);
             if (result.Failed)
             {
                 if (!m_FileURL.IsFile)
@@ -211,6 +211,5 @@ namespace SI.Discord.Webhooks
         /// The URL for a file associated with the embed.
         /// </summary>
         Uri m_FileURL;
-
     }
 }

@@ -1,27 +1,26 @@
-﻿using System;
+﻿using SI.Discord.Webhooks.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
     /// <summary>
-    /// Represents a builder for creating a HookObject used in a Discord webhook.
+    /// This class represents a builder for creating a Discord webhook message object.
+    /// It provides methods for setting various properties of the message.
     /// </summary>
     public class HookObjectBuilder
     {
         /// <summary>
-        /// Gets a value indicating whether the number of embedded files has reached the maximum limit.
+        /// Gets a value indicating whether the number of embeds has reached the maximum limit.
         /// </summary>
-        /// <remarks>
-        /// This property returns true if the number of embedded files equals the maximum allowed limit.
-        /// </remarks>
         public bool AtEmbedLimit { get { return m_Embeds.Count == HookObject.MAX_EMBEDS; } }
 
         /// <summary>
-        /// Sets the content of the HookObject.
+        /// Sets the content of the message.
         /// </summary>
-        /// <param name="content">The content to set.</param>
-        /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
+        /// <param name="content">The content of the message.</param>
+        /// <returns>The modified HookObjectBuilder instance.</returns>
         public HookObjectBuilder SetContent(string content)
         {
             m_Content = content;
@@ -29,10 +28,13 @@ namespace SI.Discord.Webhooks
         }
 
         /// <summary>
-        /// Adds an embed to the HookObject.
-        /// <para>If <see cref="m_Embeds.Count"/> is equal to <see cref="HookObject.MAX_EMBEDS"/> throws <see cref="NotSupportedException"/>.</para>
+        /// Tries to add an embed to the message.
         /// </summary>
-        /// <param name="embed">The <see cref="HookEmbed"/> to add.</param>
+        /// <param name="embed">The embed to be added.</param>
+        /// <returns>
+        /// A Result containing a success message if the operation was successful,
+        /// or an error message if the operation failed.
+        /// </returns>
         public Result<string> TryAddEmbed(HookEmbed embed)
         {
             if (AtEmbedLimit)
@@ -49,6 +51,14 @@ namespace SI.Discord.Webhooks
             return Result<string>.Success;
         }
 
+        /// <summary>
+        /// Tries to set the username for the message.
+        /// </summary>
+        /// <param name="username">The desired username.</param>
+        /// <returns>
+        /// A Result containing a success message if the operation was successful,
+        /// or an error message if the operation failed.
+        /// </returns>
         public Result<string> TrySetUsername(string username)
         {
             if (m_UsernamesInvalidContains.Contains(username.ToLower()))
@@ -76,22 +86,25 @@ namespace SI.Discord.Webhooks
         }
 
         /// <summary>
-        /// Sets the avatar URL for the HookObject.
+        /// Tries to set the avatar URL for the message.
         /// </summary>
-        /// <param name="avatarUrl">The avatar URL to set.</param>
-        /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
+        /// <param name="avatarUrl">The URL of the avatar.</param>
+        /// <returns>
+        /// A Result containing a success message if the operation was successful,
+        /// or an error message if the operation failed.
+        /// </returns>
         public Result<string> TrySetAvatarUrl(string avatarUrl)
         {
-            Result<string> result = URiHelper.TryParseURI(avatarUrl, out Uri resultURI);
+            Result<string> result = URiUtils.TryParseURI(avatarUrl, out Uri resultURI);
             m_AvatarUrl = resultURI;
             return result;
         }
 
         /// <summary>
-        /// Sets whether embedded files are disabled for the HookObject.
+        /// Sets whether embeds are disabled for the message.
         /// </summary>
-        /// <param name="disabled">A value indicating whether embedded files are disabled.</param>
-        /// <returns>The current instance of <see cref="HookObjectBuilder"/>.</returns>
+        /// <param name="disabled">A boolean indicating whether embeds are disabled.</param>
+        /// <returns>The modified HookObjectBuilder instance.</returns>
         public HookObjectBuilder SetEmbedsDisabled(bool disabled)
         {
             m_EmbedsDisabled = disabled;
@@ -99,9 +112,9 @@ namespace SI.Discord.Webhooks
         }
 
         /// <summary>
-        /// Builds and returns a <see cref="HookObject"/> instance using the provided properties.
+        /// Builds and returns the final HookObject based on the set properties.
         /// </summary>
-        /// <returns>A <see cref="HookObject"/> instance.</returns>
+        /// <returns>The constructed HookObject.</returns>
         public HookObject Build()
         {
             return new HookObject(m_Content, m_Embeds, m_Username, m_AvatarUrl, m_EmbedsDisabled);
