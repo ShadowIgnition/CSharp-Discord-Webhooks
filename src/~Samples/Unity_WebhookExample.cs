@@ -1,10 +1,13 @@
-﻿using System;
+﻿using SI.Discord.Webhooks.Models;
+using SI.Discord.Webhooks.Services;
+using SI.Discord.Webhooks.Utilities;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Examples
 {
     /// <summary>
     /// A static class for demonstrating webhook functionality.

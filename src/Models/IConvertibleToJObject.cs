@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
     /// <summary>
     /// Represents an interface for objects that can be converted to a <see cref="JObject"/>.

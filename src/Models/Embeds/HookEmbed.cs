@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
-
     /// <summary>
     /// Represents an embedded message hook container.
     /// </summary>
@@ -73,7 +72,7 @@ namespace SI.Discord.Webhooks
         /// <param name="description">The description of the embedded message.</param>
         /// <param name="url">The URL associated with the embedded message.</param>
         /// <param name="color">The color of the embedded message.</param>
-        /// <param name="fields">The list of fields in the embedded message.</param>
+        /// <param name="fields">The collection of fields in the embedded message.</param>
         /// <param name="author">The author of the embedded message.</param>
         /// <param name="text">The footer text of the embedded message.</param>
         /// <param name="timestamp">The timestamp of the embedded message.</param>

@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
-
     /// <summary>
     /// Represents an embed field for use in a hook.
     /// </summary>

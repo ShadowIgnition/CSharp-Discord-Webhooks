@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
+using SI.Discord.Webhooks.Utilities;
 using System;
 
-namespace SI.Discord.Webhooks
+namespace SI.Discord.Webhooks.Models
 {
     /// <summary>
     /// Represents an author in an embedded message hook.
@@ -20,10 +21,10 @@ namespace SI.Discord.Webhooks
         {
             Name = name;
 
-            URiHelper.TryParseURI(url, out Uri resultURL);
+            URiUtils.TryParseURI(url, out Uri resultURL);
             URL = resultURL;
 
-            URiHelper.TryParseURI(iconURL, out resultURL);
+            URiUtils.TryParseURI(iconURL, out resultURL);
             Icon_URL = resultURL;
         }
 
