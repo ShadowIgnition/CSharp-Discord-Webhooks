@@ -147,11 +147,13 @@ namespace SI.Discord.Webhooks.Models
             Result<string> result = URiUtils.TryParseURI(fileURL, out m_FileURL);
             if (result.Failed)
             {
-                if (!m_FileURL.IsFile)
-                {
-                    m_FileURL = null;
-                    return "The provided URL is not a file.";
-                }
+                return result;
+            }
+
+            if (!m_FileURL.IsFile)
+            {
+                m_FileURL = null;
+                return "The provided URL is not a file.";
             }
 
             return Result<string>.Success;

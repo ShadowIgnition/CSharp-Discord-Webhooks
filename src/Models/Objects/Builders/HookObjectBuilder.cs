@@ -61,19 +61,22 @@ namespace SI.Discord.Webhooks.Models
         /// </returns>
         public Result<string> TrySetUsername(string username)
         {
-            if (m_UsernamesInvalidContains.Contains(username.ToLower()))
+            if (string.IsNullOrWhiteSpace(username))
             {
-                return "Username cannot contain invalid text";
+                return "Username cannot be Null Or White Space";
+            }
+
+            foreach (string substring in m_UsernamesInvalidContains)
+            {
+                if (username.ToLower().Contains(substring.ToLower()))
+                {
+                    return "Username cannot contain invalid text: " + substring;
+                }
             }
 
             if (m_UsernamesInvalidEquals.Contains(username.ToLower()))
             {
                 return "Username cannot be: " + username;
-            }
-
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                return "Username cannot be Null Or White Space";
             }
 
             if (username.Length > 80)
