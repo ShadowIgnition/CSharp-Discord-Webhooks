@@ -40,21 +40,21 @@ namespace SI.Discord.Webhooks.Models
                 if (embed.Image != null && embed.Image.IsFile)
                 {
                     // Add the image file to the form data
-                    m_HookObject.EmbedFile(formData, embed.Image, "image/png", Path.GetFileName(embed.Image.AbsoluteUri));
+                    m_HookObject.EmbedFile(formData, embed.Image, "image/png", Path.GetFileName(embed.Image.LocalPath));
                 }
 
                 // Check if the embed contains a thumbnail file
                 if (embed.Thumbnail != null && embed.Thumbnail.IsFile)
                 {
                     // Add the thumbnail file to the form data
-                    m_HookObject.EmbedFile(formData, embed.Thumbnail, "image/png", Path.GetFileName(embed.Thumbnail.AbsoluteUri));
+                    m_HookObject.EmbedFile(formData, embed.Thumbnail, "image/png", Path.GetFileName(embed.Thumbnail.LocalPath));
                 }
 
                 // Check if the embed contains a file
                 if (embed.File != null && embed.File.IsFile)
                 {
                     // Add the file to the form data
-                    m_HookObject.EmbedFile(formData, embed.File, "multipart/mixed", Path.GetFileName(embed.File.AbsoluteUri));
+                    m_HookObject.EmbedFile(formData, embed.File, "multipart/mixed", Path.GetFileName(embed.File.LocalPath));
                 }
             }
 

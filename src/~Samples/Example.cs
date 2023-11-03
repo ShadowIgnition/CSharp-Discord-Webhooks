@@ -12,7 +12,7 @@ namespace SI.Discord.Webhooks.Examples
     /// <summary>
     /// A static class for demonstrating webhook functionality.
     /// </summary>
-    public static class Unity_WebhookExample
+    public static class Example
     {
         /// <summary>
         /// Sends an example message using a webhook asynchronously.
@@ -61,13 +61,8 @@ namespace SI.Discord.Webhooks.Examples
         static void BuildHookObject(HookEmbedBuilder embed, out HookObject hookObject)
         {
             HookObjectBuilder hookObjectBuilder = new();
-            Result<string> result = hookObjectBuilder.TrySetUsername("discord");
-            if (result.Failed)
-            {
-                Debug.LogError(result.Message);
-            }
 
-            result = hookObjectBuilder.TryAddEmbed(embed.Build());
+            Result<string> result = hookObjectBuilder.TryAddEmbed(embed.Build());
             if (result.Failed)
             {
                 Debug.LogError(result.Message);
