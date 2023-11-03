@@ -2,10 +2,11 @@
 using SI.Discord.Webhooks.Services;
 using SI.Discord.Webhooks.Utilities;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using UnityEngine;
+
 
 namespace SI.Discord.Webhooks.Examples
 {
@@ -26,7 +27,7 @@ namespace SI.Discord.Webhooks.Examples
             using (WebhookService webhookService = new(webhookURL))
             {
                 HttpResponseMessage responseMessage = await webhookService.SendWebhookAsync(hookObject);
-                Debug.Log(responseMessage.IsSuccessStatusCode);
+                Console.WriteLine(responseMessage.IsSuccessStatusCode);
             }
         }
 
@@ -39,20 +40,20 @@ namespace SI.Discord.Webhooks.Examples
                 .SetDescription("🚀 Let the automation begin! 🤖🌟")
                 .SetTimestamp(DateTime.UtcNow)
                 .SetTitle("🎉 Webhooks are here!")
-                .SetColor(Color.red)
+                .SetColor(Color.IndianRed)
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
                 .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks", AVATAR_URL));
 
             Result<string> result = embed.TrySetThumbnailURL(THUMBNAIL_URL);
             if (result.Failed)
             {
-                Debug.LogError(result.Message);
+                Console.WriteLine(result.Message);
             }
 
             result = embed.TrySetFileURL(tempFilePath);
             if (result.Failed)
             {
-                Debug.LogError(result.Message);
+                Console.WriteLine(result.Message);
             }
 
             return embed;
@@ -65,7 +66,7 @@ namespace SI.Discord.Webhooks.Examples
             Result<string> result = hookObjectBuilder.TryAddEmbed(embed.Build());
             if (result.Failed)
             {
-                Debug.LogError(result.Message);
+                Console.WriteLine(result.Message);
             }
 
             hookObject = hookObjectBuilder.Build();
