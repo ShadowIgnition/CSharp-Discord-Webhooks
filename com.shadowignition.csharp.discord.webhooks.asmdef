@@ -1,10 +1,8 @@
 {
-    "name": "PackageTemplate.Editor",
-    "rootNamespace": "",
+    "name": "com.shadowignition.csharp.discord.webhooks",
+    "rootNamespace": "SI.Discord.Webhooks",
     "references": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
