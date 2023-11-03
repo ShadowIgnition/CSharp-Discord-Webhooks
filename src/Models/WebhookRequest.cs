@@ -19,9 +19,10 @@ namespace SI.Discord.Webhooks.Models
         /// Initializes a new instance of the WebhookRequest class with a specified HookObject.
         /// </summary>
         /// <param name="hookObject">The HookObject containing information for the webhook.</param>
-        public WebhookRequest(HookObject hookObject)
+        public WebhookRequest(HookObject hookObject, string forumThreadId = null)
         {
             m_HookObject = hookObject;
+            m_ForumThreadId = forumThreadId;
         }
 
         /// <summary>
@@ -74,6 +75,12 @@ namespace SI.Discord.Webhooks.Models
             return formData;
         }
 
+        public string GetThreadID()
+        {
+            return m_ForumThreadId;
+        }
+
         readonly HookObject m_HookObject;
+        readonly string m_ForumThreadId;
     }
 }

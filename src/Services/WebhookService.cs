@@ -50,7 +50,7 @@ namespace SI.Discord.Webhooks.Services
         /// <param name="requestUri">The URI to send the webhook request to.</param>
         /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async static Task<HttpResponseMessage> SendWebhookAsync(Uri requestUri, HookObject hookObject) => await SendWebhookAsync(requestUri.AbsoluteUri, hookObject);
+        public async static Task<HttpResponseMessage> SendWebhookAsync(Uri requestUri, HookObject hookObject, string forumThreadId = null) => await SendWebhookAsync(requestUri.AbsoluteUri, hookObject, forumThreadId);
 
         /// <summary>
         /// Sends a webhook asynchronously to the specified URI.
@@ -58,12 +58,12 @@ namespace SI.Discord.Webhooks.Services
         /// <param name="requestUri">The URI to send the webhook request to.</param>
         /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async static Task<HttpResponseMessage> SendWebhookAsync(string requestUri, HookObject hookObject)
+        public async static Task<HttpResponseMessage> SendWebhookAsync(string requestUri, HookObject hookObject, string forumThreadId = null)
         {
             using (WebhookService webhookService = new(requestUri))
             {
                 // Send the webhook asynchronously.
-                return await webhookService.SendWebhookAsync(hookObject);
+                return await webhookService.SendWebhookAsync(hookObject, forumThreadId);
             }
         }
 
@@ -72,7 +72,7 @@ namespace SI.Discord.Webhooks.Services
         /// </summary>
         /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject)
+        public async Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject, string forumThreadId = null)
         {
             bool passedValidation = true;
 
@@ -102,7 +102,7 @@ namespace SI.Discord.Webhooks.Services
                 return errorResponse;
             }
 
-            WebhookRequest request = new(hookObject);
+            WebhookRequest request = new(hookObject, forumThreadId);
             return await m_WebhookClient.Post(m_RequestURI, request);
         }
 
