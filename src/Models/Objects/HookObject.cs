@@ -78,7 +78,7 @@ namespace SI.Discord.Webhooks.Models
         /// <exception cref="NotSupportedException">If <see cref="m_EmbeddedFilesCount"/> is equal to <see cref="MAX_EMBEDS"/></exception>
         public void EmbedFile(MultipartFormDataContent formDataContent, Uri path, string type, string name)
         {
-            if (!File.Exists(path.AbsolutePath))
+            if (!File.Exists(path.LocalPath))
             {
                 throw new FileNotFoundException($"Unable to embed file at path {path}, file does not exist!");
             }
@@ -89,7 +89,7 @@ namespace SI.Discord.Webhooks.Models
             }
 
             byte[] fileBytes;
-            using (FileStream fs = new(path.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fs = new(path.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 fileBytes = new byte[fs.Length];
                 fs.Read(fileBytes, 0, (int)fs.Length);
