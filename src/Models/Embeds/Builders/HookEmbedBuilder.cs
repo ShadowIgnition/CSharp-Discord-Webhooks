@@ -1,6 +1,7 @@
 ﻿using SI.Discord.Webhooks.Utilities;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SI.Discord.Webhooks.Models
 {
@@ -46,6 +47,17 @@ namespace SI.Discord.Webhooks.Models
         /// <param name="color">The color to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public HookEmbedBuilder SetColor(System.Drawing.Color color)
+        {
+            m_Color = color.ToInteger();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the color of the embed.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
+        public HookEmbedBuilder SetColor(Color color)
         {
             m_Color = color.ToInteger();
             return this;
