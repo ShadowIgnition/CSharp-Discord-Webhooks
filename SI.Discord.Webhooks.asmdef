@@ -1,5 +1,5 @@
 {
-    "name": "com.shadowignition.csharp.discord.webhooks",
+    "name": "SI.Discord.Webhooks",
     "rootNamespace": "SI.Discord.Webhooks",
     "references": [],
     "includePlatforms": [],

@@ -1,8 +1,8 @@
 {
-  "name": "com.shadowignition.csharp.discord.webhooks",
+  "name": "ShadowIgnition.CSharp.Discord.Webhooks",
   "displayName": "CSharp Discord Webhooks Library",
   "description": "This repository contains a C# library for interacting with Discord webhooks. It provides classes and structures for creating and handling webhook messages.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",

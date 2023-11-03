@@ -12,7 +12,7 @@ namespace SI.Discord.Webhooks.Examples
     /// <summary>
     /// A static class for demonstrating webhook functionality.
     /// </summary>
-    public static class Unity_WebhookExample
+    public static class Example
     {
         /// <summary>
         /// Sends an example message using a webhook asynchronously.
@@ -39,7 +39,7 @@ namespace SI.Discord.Webhooks.Examples
                 .SetDescription("🚀 Let the automation begin! 🤖🌟")
                 .SetTimestamp(DateTime.UtcNow)
                 .SetTitle("🎉 Webhooks are here!")
-                .SetColor(System.Drawing.Color.IndianRed)
+                .SetColor(Color.red)
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
                 .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks", AVATAR_URL));
 
@@ -61,13 +61,8 @@ namespace SI.Discord.Webhooks.Examples
         static void BuildHookObject(HookEmbedBuilder embed, out HookObject hookObject)
         {
             HookObjectBuilder hookObjectBuilder = new();
-            Result<string> result = hookObjectBuilder.TrySetUsername("discord");
-            if (result.Failed)
-            {
-                Debug.LogError(result.Message);
-            }
 
-            result = hookObjectBuilder.TryAddEmbed(embed.Build());
+            Result<string> result = hookObjectBuilder.TryAddEmbed(embed.Build());
             if (result.Failed)
             {
                 Debug.LogError(result.Message);

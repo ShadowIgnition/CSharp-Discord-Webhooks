@@ -1,10 +1,10 @@
 {
-    "name": "Tests",
+    "name": "SI.Discord.Webhooks.Tests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "com.shadowignition.csharp.discord.webhooks"
+        "SI.Discord.Webhooks"
     ],
     "includePlatforms": [
         "Editor"
