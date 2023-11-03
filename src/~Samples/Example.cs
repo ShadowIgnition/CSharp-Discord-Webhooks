@@ -39,7 +39,7 @@ namespace SI.Discord.Webhooks.Examples
                 .SetDescription("🚀 Let the automation begin! 🤖🌟")
                 .SetTimestamp(DateTime.UtcNow)
                 .SetTitle("🎉 Webhooks are here!")
-                .SetColor(System.Drawing.Color.IndianRed)
+                .SetColor(Color.red)
                 .AddField(new HookEmbedField("Field", "A webhook is a mechanism that allows one system to send real-time data to another system as soon as an event occurs, enabling seamless communication and automated processes between different applications or platforms.", false))
                 .SetAuthor(new HookEmbedAuthor("Discord Webhook!", "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks", AVATAR_URL));
 
