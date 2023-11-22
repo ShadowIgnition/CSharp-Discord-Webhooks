@@ -13,5 +13,9 @@
     "email": "43722770+ShadowIgnition@users.noreply.github.com",
     "url": "https://github.com/shadowignition"
   },
-  "dependencies": {}
+  "dependencies": {
+	  "Newtonsoft.Json": "13.0.3"
+	  
+  }
+
 }

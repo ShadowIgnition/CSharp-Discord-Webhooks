@@ -57,15 +57,15 @@ namespace SI.Discord.Webhooks.Models
             JObject root = new();
             if (!string.IsNullOrEmpty(Name))
             {
-                root.Add(nameof(Name).ToLower(), Name);
+                root.Add(nameof(Name).ToLowerInvariant(), Name);
             }
             if (!string.IsNullOrEmpty(Value))
             {
-                root.Add(nameof(Value).ToLower(), Value);
+                root.Add(nameof(Value).ToLowerInvariant(), Value);
             }
             if (Inline.HasValue)
             {
-                root.Add(nameof(Inline).ToLower(), Inline.Value);
+                root.Add(nameof(Inline).ToLowerInvariant(), Inline.Value);
             }
             return root;
         }
