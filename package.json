@@ -14,7 +14,7 @@
     "url": "https://github.com/shadowignition"
   },
   "dependencies": {
-	  "Newtonsoft.Json": "13.0.3"
+	  "com.newtonsoft.json": "13.0.3"
 	  
   }
 
