@@ -53,15 +53,15 @@ namespace SI.Discord.Webhooks.Models
 
             if (!string.IsNullOrEmpty(Name))
             {
-                root.Add(nameof(Name).ToLower(), Name);
+                root.Add(nameof(Name).ToLowerInvariant(), Name);
             }
             if (URL != null)
             {
-                root.Add(nameof(URL).ToLower(), URL.AbsoluteUri);
+                root.Add(nameof(URL).ToLowerInvariant(), URL.AbsoluteUri);
             }
             if (Icon_URL != null)
             {
-                root.Add(nameof(Icon_URL).ToLower(), Icon_URL.AbsoluteUri);
+                root.Add(nameof(Icon_URL).ToLowerInvariant(), Icon_URL.AbsoluteUri);
             }
             return root;
         }

@@ -104,22 +104,22 @@ namespace SI.Discord.Webhooks.Models
 
             if (!string.IsNullOrEmpty(Title))
             {
-                root.Add(nameof(Title).ToLower(), Title);
+                root.Add(nameof(Title).ToLowerInvariant(), Title);
             }
 
             if (!string.IsNullOrEmpty(Description))
             {
-                root.Add(nameof(Description).ToLower(), Description);
+                root.Add(nameof(Description).ToLowerInvariant(), Description);
             }
 
             if (URL != null)
             {
-                root.Add(nameof(URL).ToLower(), URL);
+                root.Add(nameof(URL).ToLowerInvariant(), URL);
             }
 
             if (Color.HasValue)
             {
-                root.Add(nameof(Color).ToLower(), Color);
+                root.Add(nameof(Color).ToLowerInvariant(), Color);
             }
 
             if (!string.IsNullOrEmpty(Footer))
@@ -128,14 +128,14 @@ namespace SI.Discord.Webhooks.Models
                 {
                 { "text", Footer }
             };
-                root.Add(nameof(Footer).ToLower(), footer);
+                root.Add(nameof(Footer).ToLowerInvariant(), footer);
             }
 
             if (Timestamp.HasValue)
             {
                 // Convert DateTime to ISO 8601 format
                 string iso8601DateTime = Timestamp.Value.ToString(ISO8601);
-                root.Add(nameof(Timestamp).ToLower(), iso8601DateTime);
+                root.Add(nameof(Timestamp).ToLowerInvariant(), iso8601DateTime);
             }
 
             if (Fields != null && Fields.Count != 0)
@@ -145,12 +145,12 @@ namespace SI.Discord.Webhooks.Models
                 {
                     fields.Add(field.ToJObject());
                 }
-                root.Add(nameof(Fields).ToLower(), fields);
+                root.Add(nameof(Fields).ToLowerInvariant(), fields);
             }
 
             if (Author.HasValue)
             {
-                root.Add(nameof(Author).ToLower(), Author.Value.ToJObject());
+                root.Add(nameof(Author).ToLowerInvariant(), Author.Value.ToJObject());
             }
 
             // todo: if file then attach
@@ -168,7 +168,7 @@ namespace SI.Discord.Webhooks.Models
                     image.Add("url", Image.AbsoluteUri);
                 }
 
-                root.Add(nameof(Image).ToLower(), image);
+                root.Add(nameof(Image).ToLowerInvariant(), image);
             }
 
             if (Thumbnail != null)
@@ -184,7 +184,7 @@ namespace SI.Discord.Webhooks.Models
                     thumbnail.Add("url", Thumbnail.AbsoluteUri);
                 }
 
-                root.Add(nameof(Thumbnail).ToLower(), thumbnail);
+                root.Add(nameof(Thumbnail).ToLowerInvariant(), thumbnail);
             }
 
             if (File != null && File.IsFile)
@@ -194,7 +194,7 @@ namespace SI.Discord.Webhooks.Models
                 { "url", "attachment://" + Path.GetFileName(File.AbsoluteUri) }
             };
 
-                root.Add(nameof(File).ToLower(), file);
+                root.Add(nameof(File).ToLowerInvariant(), file);
             }
             return root;
         }

@@ -68,6 +68,7 @@ namespace SI.Discord.Webhooks.Examples
                 Debug.LogError(result.Message);
             }
 
+            hookObjectBuilder.SetForumThreadName(embed.Description);
             hookObject = hookObjectBuilder.Build();
         }
 
