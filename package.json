@@ -12,5 +12,8 @@
     "name": "shadowignition",
     "email": "43722770+ShadowIgnition@users.noreply.github.com",
     "url": "https://github.com/shadowignition"
+  },
+  "dependencies": {
+	 "com.unity.nuget.newtonsoft-json": "3.2.0"	  
   }
 }
