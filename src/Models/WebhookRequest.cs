@@ -1,10 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using UnityEngine.UI;
 
 namespace SI.Discord.Webhooks.Models
 {
+    public class HookPayload
+    {
+        public HttpContent Content;
+
+        public HookPayload(HttpContent content)
+        {
+            Content = content;
+        }
+    }
+
     /// <summary>
     /// Represents a class for creating a webhook request payload.
     /// </summary>
@@ -13,15 +25,19 @@ namespace SI.Discord.Webhooks.Models
     /// It processes the provided HookObject to extract embeds and files, converts them to the required format,
     /// and creates a multipart form data content that includes both JSON and file data.
     /// </remarks>
-    public class WebhookRequest : IWebhookRequest
+    public record WebhookRequest
     {
+        public IHookObjectToken PrimaryToken { get; }
+        public IHookObjectToken[] SecondaryTokens { get; }
+
         /// <summary>
         /// Initializes a new instance of the WebhookRequest class with a specified HookObject.
         /// </summary>
         /// <param name="hookObject">The HookObject containing information for the webhook.</param>
-        public WebhookRequest(HookObject hookObject)
+        public WebhookRequest(IHookObjectToken hookObject, params IHookObjectToken[] subHookObjects)
         {
-            m_HookObject = hookObject;
+            PrimaryToken = hookObject;
+            SecondaryTokens = subHookObjects;
         }
 
         /// <summary>
@@ -32,48 +48,25 @@ namespace SI.Discord.Webhooks.Models
         {
             // Initialize a new MultipartFormDataContent
             MultipartFormDataContent formData = new();
-
-            // Iterate through the embeds in the HookObject
-            foreach (HookEmbed embed in m_HookObject.Embeds)
+            if (PrimaryToken is HookObject m_HookObject)
             {
-                // Check if the embed contains an image file
-                if (embed.Image != null && embed.Image.IsFile)
-                {
-                    // Add the image file to the form data
-                    m_HookObject.EmbedFile(formData, embed.Image, "image/png", Path.GetFileName(embed.Image.LocalPath));
-                }
+                // Create a JSON object structure from the HookObject
+                JObject json = m_HookObject.ToJObject();
 
-                // Check if the embed contains a thumbnail file
-                if (embed.Thumbnail != null && embed.Thumbnail.IsFile)
-                {
-                    // Add the thumbnail file to the form data
-                    m_HookObject.EmbedFile(formData, embed.Thumbnail, "image/png", Path.GetFileName(embed.Thumbnail.LocalPath));
-                }
+                // Convert the JSON object to a string
+                string jsonStr = json.ToString();
 
-                // Check if the embed contains a file
-                if (embed.File != null && embed.File.IsFile)
-                {
-                    // Add the file to the form data
-                    m_HookObject.EmbedFile(formData, embed.File, "multipart/mixed", Path.GetFileName(embed.File.LocalPath));
-                }
+                // Create a StringContent with JSON data
+                StringContent jsonContent = new(jsonStr, Encoding.UTF8, "application/json");
+
+                // Add JSON content to formData
+                formData.Add(jsonContent, "payload_json");
             }
 
-            // Create a JSON object structure from the HookObject
-            JObject json = m_HookObject.ToJObject();
 
-            // Convert the JSON object to a string
-            string jsonStr = json.ToString();
-
-            // Create a StringContent with JSON data
-            StringContent jsonContent = new(jsonStr, Encoding.UTF8, "application/json");
-
-            // Add JSON content to formData
-            formData.Add(jsonContent, "payload_json");
 
             // Return the final payload
             return formData;
         }
-
-        readonly HookObject m_HookObject;
     }
 }

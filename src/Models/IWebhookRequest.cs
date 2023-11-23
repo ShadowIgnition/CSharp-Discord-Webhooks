@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 
 namespace SI.Discord.Webhooks.Models
 {
@@ -10,7 +11,7 @@ namespace SI.Discord.Webhooks.Models
         /// <summary>
         /// Creates the payload content for the webhook request.
         /// </summary>
-        /// <returns>The HTTP content representing the payload.</returns>
-        HttpContent CreatePayload();
+        /// <returns>The HookPayload representing the payload.</returns>
+        HookPayload CreatePayload();
     }
 }

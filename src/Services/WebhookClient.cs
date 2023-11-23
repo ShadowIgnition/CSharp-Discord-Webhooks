@@ -1,5 +1,6 @@
 ﻿using SI.Discord.Webhooks.Models;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,32 +26,10 @@ namespace SI.Discord.Webhooks.Services
             m_HttpClient = httpClient;
         }
 
-        /// <summary>
-        /// Sends a webhook request to the specified URI.
-        /// </summary>
-        /// <param name="requestUri">The URI to send the webhook request to.</param>
-        /// <param name="request">The WebhookRequest object containing the payload and other details.</param>
-        /// <returns>A Task representing the asynchronous operation, which returns an HttpResponseMessage.</returns>
-        public async Task<HttpResponseMessage> Post(string requestUri, WebhookRequest request)
+        public async Task<HttpResponseMessage> PostSingle(string requestUri, HookPayload payload)
         {
-            try
-            {
-                // Create an HttpContent payload from the WebhookRequest
-                using (HttpContent payload = request.CreatePayload())
-                {
-                    // Send an asynchronous POST request
-                    return await m_HttpClient.PostAsync(requestUri, payload);
-                }
-            }
-            catch (Exception ex)
-            {
-                // If an exception occurs, create and return an error response
-                HttpResponseMessage errorResponse = new(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent($"An error occurred while sending the webhook: {ex.Message}")
-                };
-                return errorResponse;
-            }
+            var a= await  m_HttpClient.PostAsync(requestUri, payload.Content);
+            return a;
         }
 
         /// <summary>

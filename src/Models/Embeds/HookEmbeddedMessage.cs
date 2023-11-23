@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using GluonGui.Dialog;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace SI.Discord.Webhooks.Models
 {
+
     /// <summary>
     /// Represents an embedded message hook container.
     /// </summary>
-    public struct HookEmbed : IConvertibleToJObject
+    public struct HookEmbedContent : IConvertibleToJObject
     {
         /// <summary>
         /// The title of the embedded message.
@@ -51,19 +53,9 @@ namespace SI.Discord.Webhooks.Models
         public DateTime? Timestamp { get; private set; }
 
         /// <summary>
-        /// The image URL of the embedded message.
-        /// </summary>
-        public Uri Image { get; private set; }
-
-        /// <summary>
         /// The thumbnail URL of the embedded message.
         /// </summary>
         public Uri Thumbnail { get; private set; }
-
-        /// <summary>
-        /// The file URL of the embedded message.
-        /// </summary>
-        public Uri File { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the HookEmbed struct.
@@ -79,7 +71,7 @@ namespace SI.Discord.Webhooks.Models
         /// <param name="image">The image URL of the embedded message.</param>
         /// <param name="thumbnail">The thumbnail URL of the embedded message.</param>
         /// <param name="file">The file URL of the embedded message.</param>
-        public HookEmbed(string title, string description, Uri url, int? color, ICollection<HookEmbedField> fields, HookEmbedAuthor? author, string text, DateTime? timestamp, Uri image, Uri thumbnail, Uri file)
+        public HookEmbedContent(string title, string description, Uri url, int? color, ICollection<HookEmbedField> fields, HookEmbedAuthor? author, string text, DateTime? timestamp, Uri thumbnail)
         {
             Title = title;
             Description = description;
@@ -89,9 +81,7 @@ namespace SI.Discord.Webhooks.Models
             Author = author;
             Footer = text;
             Timestamp = timestamp;
-            Image = image;
             Thumbnail = thumbnail;
-            File = file;
         }
 
         /// <summary>
@@ -153,23 +143,6 @@ namespace SI.Discord.Webhooks.Models
                 root.Add(nameof(Author).ToLowerInvariant(), Author.Value.ToJObject());
             }
 
-            // todo: if file then attach
-
-            if (Image != null && !Image.IsFile)
-            {
-                JObject image = new();
-
-                if (Image.IsFile)
-                {
-                    image.Add("url", "attachment://" + Path.GetFileName(Image.AbsoluteUri));
-                }
-                else
-                {
-                    image.Add("url", Image.AbsoluteUri);
-                }
-
-                root.Add(nameof(Image).ToLowerInvariant(), image);
-            }
 
             if (Thumbnail != null)
             {
@@ -187,15 +160,6 @@ namespace SI.Discord.Webhooks.Models
                 root.Add(nameof(Thumbnail).ToLowerInvariant(), thumbnail);
             }
 
-            if (File != null && File.IsFile)
-            {
-                JObject file = new()
-            {
-                { "url", "attachment://" + Path.GetFileName(File.AbsoluteUri) }
-            };
-
-                root.Add(nameof(File).ToLowerInvariant(), file);
-            }
             return root;
         }
 

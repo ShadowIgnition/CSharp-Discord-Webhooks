@@ -1,4 +1,5 @@
-﻿using SI.Discord.Webhooks.Models;
+﻿using Newtonsoft.Json;
+using SI.Discord.Webhooks.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -12,8 +13,8 @@ namespace SI.Discord.Webhooks.Services
         /// <summary>
         /// Sends a webhook asynchronously.
         /// </summary>
-        /// <param name="hookObject">The HookObject containing webhook data.</param>
+        /// <param name="hookObjectToken">The HookObject containing webhook data.</param>
         /// <returns>The HttpResponseMessage returned from the webhook request.</returns>
-        public Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject);
+        public Task<WebhookResponse> SendWebhookAsync(WebhookRequest hookObjectToken);
     }
 }
