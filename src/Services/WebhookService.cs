@@ -40,6 +40,7 @@ namespace SI.Discord.Webhooks.Services
         public WebhookService(string requestURI, IWebhookClient webhookClient)
         {
             m_RequestURI = requestURI;
+            m_HookObjectValidator = new();
             m_WebhookClient = webhookClient;
         }
 
@@ -47,41 +48,61 @@ namespace SI.Discord.Webhooks.Services
         /// Sends a webhook asynchronously to the specified URI.
         /// </summary>
         /// <param name="requestUri">The URI to send the webhook request to.</param>
-        /// <param name="hookObjectToken">The HookObject containing the webhook data.</param>
+        /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async static Task<WebhookResponse> SendWebhookAsync(Uri requestUri, WebhookRequest hookObjectToken) => await SendWebhookAsync(requestUri.AbsoluteUri, hookObjectToken);
+        public async static Task<HttpResponseMessage> SendWebhookAsync(Uri requestUri, HookObject hookObject) => await SendWebhookAsync(requestUri.AbsoluteUri, hookObject);
 
         /// <summary>
         /// Sends a webhook asynchronously to the specified URI.
         /// </summary>
         /// <param name="requestUri">The URI to send the webhook request to.</param>
-        /// <param name="hookObjectToken">The HookObject containing the webhook data.</param>
+        /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async static Task<WebhookResponse> SendWebhookAsync(string requestUri, WebhookRequest hookObjectToken)
+        public async static Task<HttpResponseMessage> SendWebhookAsync(string requestUri, HookObject hookObject)
         {
             using (WebhookService webhookService = new(requestUri))
             {
                 // Send the webhook asynchronously.
-                return await webhookService.SendWebhookAsync(hookObjectToken);
+                return await webhookService.SendWebhookAsync(hookObject);
             }
         }
 
         /// <summary>
         /// Sends a webhook asynchronously with the specified HookObject.
         /// </summary>
-        /// <param name="hookObjectToken">The HookObject containing the webhook data.</param>
+        /// <param name="hookObject">The HookObject containing the webhook data.</param>
         /// <returns>The HttpResponseMessage from the webhook request.</returns>
-        public async Task<WebhookResponse> SendWebhookAsync(WebhookRequest request)
+        public async Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject)
         {
             bool passedValidation = true;
 
             List<string> failureReasons = new();
-            request.PrimaryToken.Validate();
-            foreach (var token in request.SecondaryTokens)
+
+            if (!m_HookObjectValidator.WithinEmbedLimit(hookObject))
             {
-                token.Validate();
+                passedValidation = false;
+                failureReasons.Add($"More than {HookObject.MAX_EMBEDS} Embedded files is not supported on a discord webhook");
             }
 
+            Result<string> userNameResult = m_HookObjectValidator.HasValidUsername(hookObject);
+
+            if (!userNameResult.Succeeded)
+            {
+                passedValidation = false;
+                failureReasons.Add("Invalid Username: " + userNameResult.Message);
+            }
+
+            if (!passedValidation)
+            {
+                string reasons = string.Join(", ", failureReasons);
+                HttpResponseMessage errorResponse = new(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent($"An error occurred while sending the webhook, reasons: {reasons}")
+                };
+                return errorResponse;
+            }
+
+            WebhookRequest request = new(hookObject);
             return await m_WebhookClient.Post(m_RequestURI, request);
         }
 
@@ -94,6 +115,7 @@ namespace SI.Discord.Webhooks.Services
         }
 
         readonly string m_RequestURI;
+        readonly HookObjectValidator m_HookObjectValidator;
         readonly IWebhookClient m_WebhookClient;
     }
 }

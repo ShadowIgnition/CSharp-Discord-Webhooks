@@ -16,7 +16,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             string title = "Test Title";
             builder.SetTitle(title);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(title, embed.Title);
         }
@@ -27,7 +27,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             string description = "Test Description";
             builder.SetDescription(description);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(description, embed.Description);
         }
@@ -38,7 +38,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             Color color = Color.Red;
             builder.SetColor(color);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(color.ToInteger(), embed.Color);
         }
@@ -49,7 +49,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             int color = 16711680; // Red color as integer
             builder.SetColor(color);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(color, embed.Color);
         }
@@ -60,7 +60,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             HookEmbedField field = new HookEmbedField("Test Field", "Test Value", false);
             builder.AddField(field);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.Contains(field, (System.Collections.ICollection)embed.Fields);
         }
@@ -71,7 +71,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             HookEmbedAuthor author = new HookEmbedAuthor("Test Author", "Test URL", "Test IconUrl");
             builder.SetAuthor(author);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(author, embed.Author);
         }
@@ -82,7 +82,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             string text = "Test Text";
             builder.SetText(text);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(text, embed.Footer);
         }
@@ -93,7 +93,7 @@ namespace SI.Discord.Webhooks.Tests
             HookEmbedBuilder builder = new HookEmbedBuilder();
             DateTime timestamp = DateTime.Now;
             builder.SetTimestamp(timestamp);
-            HookEmbedContent embed = builder.Build();
+            HookEmbed embed = builder.Build();
 
             Assert.AreEqual(timestamp, embed.Timestamp);
         }
@@ -119,6 +119,16 @@ namespace SI.Discord.Webhooks.Tests
         }
 
         [Test]
+        public void TrySetImageURL_ValidURL_ReturnsSuccessResult()
+        {
+            HookEmbedBuilder builder = new HookEmbedBuilder();
+            string url = IMAGE_URL;
+            Result<string> result = builder.TrySetImageURL(url);
+
+            Assert.IsTrue(result.Succeeded);
+        }
+
+        [Test]
         public void TrySetThumbnailURL_ValidURL_ReturnsSuccessResult()
         {
             HookEmbedBuilder builder = new HookEmbedBuilder();
@@ -126,6 +136,25 @@ namespace SI.Discord.Webhooks.Tests
             Result<string> result = builder.TrySetThumbnailURL(url);
 
             Assert.IsTrue(result.Succeeded);
+        }
+
+        [Test]
+        public void TrySetFileURL_ValidURL_ReturnsSuccessResult()
+        {
+            HookEmbedBuilder builder = new HookEmbedBuilder();
+            Result<string> result = builder.TrySetFileURL(Path.GetTempFileName());
+
+            Assert.IsTrue(result.Succeeded);
+        }
+
+        [Test]
+        public void TrySetFileURL_InvalidURL_ReturnsFailureResult()
+        {
+            HookEmbedBuilder builder = new HookEmbedBuilder();
+            string url = "invalid_url";
+            Result<string> result = builder.TrySetFileURL(url);
+
+            Assert.IsFalse(result.Succeeded);
         }
 
         const string IMAGE_URL = "https://github.com/ShadowIgnition/CSharp-Discord-Webhooks/blob/development/Tests/image.png";

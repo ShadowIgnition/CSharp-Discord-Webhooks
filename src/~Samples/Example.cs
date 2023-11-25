@@ -19,20 +19,18 @@ namespace SI.Discord.Webhooks.Examples
         /// </summary>
         public static async Task SendExample(string webhookURL)
         {
-            BuildHookEmbed(out HookEmbedBuilder embed, out HookObjectAttachement attachement);
+            BuildHookEmbed(out HookEmbedBuilder embed);
             BuildHookObject(embed, out HookObject hookObject);
-
-            var a = new WebhookRequest(hookObject, attachement);
 
             // Create service
             using (WebhookService webhookService = new(webhookURL))
             {
-                WebhookResponse response = await webhookService.SendWebhookAsync(a);
-                Debug.Log(response.ToString());
+                HttpResponseMessage responseMessage = await webhookService.SendWebhookAsync(hookObject);
+                Debug.Log(responseMessage.IsSuccessStatusCode);
             }
         }
 
-        static HookEmbedBuilder BuildHookEmbed(out HookEmbedBuilder embed, out HookObjectAttachement attachement)
+        static HookEmbedBuilder BuildHookEmbed(out HookEmbedBuilder embed)
         {
             string tempFilePath = Path.GetTempFileName();
 
@@ -50,8 +48,8 @@ namespace SI.Discord.Webhooks.Examples
             {
                 Debug.LogError(result.Message);
             }
-            
-            result = HookObjectAttachement.TryCreate(new(tempFilePath), out attachement);
+
+            result = embed.TrySetFileURL(tempFilePath);
             if (result.Failed)
             {
                 Debug.LogError(result.Message);

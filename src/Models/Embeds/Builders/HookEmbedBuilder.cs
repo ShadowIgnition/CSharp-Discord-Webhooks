@@ -14,9 +14,9 @@ namespace SI.Discord.Webhooks.Models
         /// Builds and returns the final HookEmbed instance.
         /// </summary>
         /// <returns>The built HookEmbed instance.</returns>
-        public HookEmbedContent Build()
+        public HookEmbed Build()
         {
-            return new HookEmbedContent(Title, Description, m_Url, m_Color, m_Fields, m_Author, m_Text, m_Timestamp, m_ThumbnailURL);
+            return new HookEmbed(Title, Description, m_Url, m_Color, m_Fields, m_Author, m_Text, m_Timestamp, m_ImageURL, m_ThumbnailURL, m_FileURL);
         }
 
         /// <summary>
@@ -130,6 +130,16 @@ namespace SI.Discord.Webhooks.Models
         }
 
         /// <summary>
+        /// Sets the image URL of the embed.
+        /// </summary>
+        /// <param name="imageURL">The image URL to set.</param>
+        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
+        public Result<string> TrySetImageURL(string imageURL)
+        {
+            return URiUtils.TryParseURI(imageURL, out m_ImageURL);
+        }
+
+        /// <summary>
         /// Sets the thumbnail URL of the embed.
         /// </summary>
         /// <param name="thumbnailURL">The thumbnail URL to set.</param>
@@ -137,6 +147,28 @@ namespace SI.Discord.Webhooks.Models
         public Result<string> TrySetThumbnailURL(string thumbnailURL)
         {
             return URiUtils.TryParseURI(thumbnailURL, out m_ThumbnailURL);
+        }
+
+        /// <summary>
+        /// Sets the file URL of the embed.
+        /// </summary>
+        /// <param name="fileURL">The file URL to set.</param>
+        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
+        public Result<string> TrySetFileURL(string fileURL)
+        {
+            Result<string> result = URiUtils.TryParseURI(fileURL, out m_FileURL);
+            if (result.Failed)
+            {
+                return result;
+            }
+
+            if (!m_FileURL.IsFile)
+            {
+                m_FileURL = null;
+                return "The provided URL is not a file.";
+            }
+
+            return Result<string>.Success;
         }
 
         /// <summary>
@@ -178,6 +210,11 @@ namespace SI.Discord.Webhooks.Models
         /// The timestamp for the embed.
         /// </summary>
         DateTime? m_Timestamp;
+
+        /// <summary>
+        /// The URL for the main image in the embed.
+        /// </summary>
+        Uri m_ImageURL;
 
         /// <summary>
         /// The URL for the thumbnail image in the embed.

@@ -35,7 +35,7 @@ namespace SI.Discord.Webhooks.Models
         /// A Result containing a success message if the operation was successful,
         /// or an error message if the operation failed.
         /// </returns>
-        public Result<string> TryAddEmbed(HookEmbedContent embed)
+        public Result<string> TryAddEmbed(HookEmbed embed)
         {
             if (AtEmbedLimit)
             {
@@ -143,7 +143,7 @@ namespace SI.Discord.Webhooks.Models
         /// <summary>
         /// The list of embedded files in the HookObject.
         /// </summary>
-        readonly List<HookEmbedContent> m_Embeds = new();
+        readonly List<HookEmbed> m_Embeds = new();
 
         /// <summary>
         /// The username associated with the HookObject.

@@ -24,7 +24,7 @@ namespace SI.Discord.Webhooks.Tests
         public void TryAddEmbed_LessThanLimit_EmbedAddedSuccessfully()
         {
             HookObjectBuilder builder = new();
-            HookEmbedContent embed = new();
+            HookEmbed embed = new();
 
             Result<string> result = builder.TryAddEmbed(embed);
 
@@ -36,7 +36,7 @@ namespace SI.Discord.Webhooks.Tests
         public void TryAddEmbed_AtLimit_ErrorReturned()
         {
             HookObjectBuilder builder = new();
-            HookEmbedContent embed = new();
+            HookEmbed embed = new();
 
             // Add maximum number of embeds
             for (int i = 0; i <= HookObject.MAX_EMBEDS; i++)
