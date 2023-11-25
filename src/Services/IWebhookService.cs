@@ -14,6 +14,6 @@ namespace SI.Discord.Webhooks.Services
         /// </summary>
         /// <param name="hookObject">The HookObject containing webhook data.</param>
         /// <returns>The HttpResponseMessage returned from the webhook request.</returns>
-        public Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject);
+        public Task<HttpResponseMessage> SendWebhookAsync(HookObject hookObject, string forumThreadId = null);
     }
 }

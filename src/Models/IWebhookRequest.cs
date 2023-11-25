@@ -12,5 +12,7 @@ namespace SI.Discord.Webhooks.Models
         /// </summary>
         /// <returns>The HTTP content representing the payload.</returns>
         HttpContent CreatePayload();
+
+        string GetThreadID();
     }
 }

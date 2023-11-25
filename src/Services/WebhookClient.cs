@@ -38,8 +38,12 @@ namespace SI.Discord.Webhooks.Services
                 // Create an HttpContent payload from the WebhookRequest
                 using (HttpContent payload = request.CreatePayload())
                 {
+                    string threadID = request.GetThreadID();
+                    string uri = threadID == null ?
+                        requestUri :
+                        requestUri + string.Format(THREAD_ID_FORMAT, threadID);
                     // Send an asynchronous POST request
-                    return await m_HttpClient.PostAsync(requestUri, payload);
+                    return await m_HttpClient.PostAsync(uri, payload);
                 }
             }
             catch (Exception ex)
@@ -61,6 +65,7 @@ namespace SI.Discord.Webhooks.Services
             m_HttpClient?.Dispose();
         }
 
+        const string THREAD_ID_FORMAT = "?thread_id={0}";
         readonly HttpClient m_HttpClient; // The HttpClient used for sending webhooks.
     }
 }
