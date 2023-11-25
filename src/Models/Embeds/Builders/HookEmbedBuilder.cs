@@ -1,6 +1,7 @@
 ﻿using SI.Discord.Webhooks.Utilities;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace SI.Discord.Webhooks.Models
 {
@@ -15,7 +16,7 @@ namespace SI.Discord.Webhooks.Models
         /// <returns>The built HookEmbed instance.</returns>
         public HookEmbed Build()
         {
-            return new HookEmbed(m_Title, m_Description, m_Url, m_Color, m_Fields, m_Author, m_Text, m_Timestamp, m_ImageURL, m_ThumbnailURL, m_FileURL);
+            return new HookEmbed(Title, Description, m_Url, m_Color, m_Fields, m_Author, m_Text, m_Timestamp, m_ImageURL, m_ThumbnailURL, m_FileURL);
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace SI.Discord.Webhooks.Models
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public HookEmbedBuilder SetTitle(string title)
         {
-            m_Title = title;
+            Title = title;
             return this;
         }
 
@@ -36,7 +37,7 @@ namespace SI.Discord.Webhooks.Models
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public HookEmbedBuilder SetDescription(string description)
         {
-            m_Description = description;
+            Description = description;
             return this;
         }
 
@@ -46,6 +47,17 @@ namespace SI.Discord.Webhooks.Models
         /// <param name="color">The color to set.</param>
         /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
         public HookEmbedBuilder SetColor(System.Drawing.Color color)
+        {
+            m_Color = color.ToInteger();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the color of the embed.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The current instance of <see cref="HookEmbedBuilder"/>.</returns>
+        public HookEmbedBuilder SetColor(Color color)
         {
             m_Color = color.ToInteger();
             return this;
@@ -162,12 +174,12 @@ namespace SI.Discord.Webhooks.Models
         /// <summary>
         /// The title of the embed.
         /// </summary>
-        string m_Title;
+        public string Title { get; private set; }
 
         /// <summary>
         /// The description of the embed.
         /// </summary>
-        string m_Description;
+        public string Description { get; private set; }
 
         /// <summary>
         /// The URL associated with the embed.

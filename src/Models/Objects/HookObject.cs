@@ -40,6 +40,8 @@ namespace SI.Discord.Webhooks.Models
         /// </summary>
         public int Flags { get; private set; }
 
+        public string Thread_Name { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HookObject"/> struct.
         /// <para>If <see cref="content"/> nor <see cref="embeds"/> is not set, throws <see cref="ArgumentException"/>.</para>
@@ -50,7 +52,7 @@ namespace SI.Discord.Webhooks.Models
         /// <param name="avatarUrl">The URL of the avatar image.</param>
         /// <param name="embedsDisabled">A flag indicating if embeds are disabled.</param>
         /// <exception cref="ArgumentException">Thrown if neither content nor embeds are provided.</exception>
-        public HookObject(string content, IList<HookEmbed> embeds, string username, Uri avatarUrl, bool embedsDisabled)
+        public HookObject(string content, IList<HookEmbed> embeds, string username, Uri avatarUrl, bool embedsDisabled, string threadName)
         {
             if (string.IsNullOrEmpty(content) && (embeds == null || embeds.Count == 0))
             {
@@ -63,6 +65,7 @@ namespace SI.Discord.Webhooks.Models
             Avatar_Url = avatarUrl;
             Flags = embedsDisabled ? 1 << 2 : 0;
             m_EmbeddedFilesCount = 0;
+            Thread_Name = threadName;
         }
 
         /// <summary>
@@ -110,12 +113,12 @@ namespace SI.Discord.Webhooks.Models
 
             if (!string.IsNullOrEmpty(Content))
             {
-                root.Add(nameof(Content).ToLower(), Content);
+                root.Add(nameof(Content).ToLowerInvariant(), Content);
             }
 
             if (Avatar_Url != null)
             {
-                root.Add(nameof(Avatar_Url).ToLower(), Avatar_Url.AbsoluteUri);
+                root.Add(nameof(Avatar_Url).ToLowerInvariant(), Avatar_Url.AbsoluteUri);
             }
 
             if (Embeds != null && Embeds.Count != 0)
@@ -125,18 +128,19 @@ namespace SI.Discord.Webhooks.Models
                 {
                     embeds.Add(embed.ToJObject());
                 }
-                root.Add(nameof(Embeds).ToLower(), embeds);
+                root.Add(nameof(Embeds).ToLowerInvariant(), embeds);
             }
 
             if (!string.IsNullOrEmpty(Username))
             {
-                root.Add(nameof(Username).ToLower(), Username);
+                root.Add(nameof(Username).ToLowerInvariant(), Username);
             }
 
             if (Flags != default)
             {
-                root.Add(nameof(Flags).ToLower(), Flags);
+                root.Add(nameof(Flags).ToLowerInvariant(), Flags);
             }
+            root.Add(nameof(Thread_Name).ToLowerInvariant(), Thread_Name); ;
 
             return root;
         }

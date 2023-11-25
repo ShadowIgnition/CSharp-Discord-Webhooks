@@ -68,13 +68,13 @@ namespace SI.Discord.Webhooks.Models
 
             foreach (string substring in m_UsernamesInvalidContains)
             {
-                if (username.ToLower().Contains(substring.ToLower()))
+                if (username.ToLowerInvariant().Contains(substring.ToLowerInvariant()))
                 {
                     return "Username cannot contain invalid text: " + substring;
                 }
             }
 
-            if (m_UsernamesInvalidEquals.Contains(username.ToLower()))
+            if (m_UsernamesInvalidEquals.Contains(username.ToLowerInvariant()))
             {
                 return "Username cannot be: " + username;
             }
@@ -115,12 +115,24 @@ namespace SI.Discord.Webhooks.Models
         }
 
         /// <summary>
+        /// Sets the name of the created Forum Thread
+        /// </summary>
+        /// <param name="embed">The name of the thread.</param>
+        /// <returns>
+        /// <returns>The modified HookObjectBuilder instance.</returns>
+        public HookObjectBuilder SetForumThreadName(string name)
+        {
+            m_Threadname = name;
+            return this;
+        }
+
+        /// <summary>
         /// Builds and returns the final HookObject based on the set properties.
         /// </summary>
         /// <returns>The constructed HookObject.</returns>
         public HookObject Build()
         {
-            return new HookObject(m_Content, m_Embeds, m_Username, m_AvatarUrl, m_EmbedsDisabled);
+            return new HookObject(m_Content, m_Embeds, m_Username, m_AvatarUrl, m_EmbedsDisabled, m_Threadname);
         }
 
         /// <summary>
@@ -147,6 +159,11 @@ namespace SI.Discord.Webhooks.Models
         /// A flag indicating whether embedded files are disabled for the HookObject.
         /// </summary>
         bool m_EmbedsDisabled = false;
+
+        /// <summary>
+        /// The name of the thread (forums only)
+        /// </summary>
+        string m_Threadname = null;
 
         /// <summary>
         /// An array of strings containing invalid text that should not be part of a username.

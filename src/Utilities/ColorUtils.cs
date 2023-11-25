@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace SI.Discord.Webhooks.Utilities
 {
@@ -25,6 +26,21 @@ namespace SI.Discord.Webhooks.Utilities
 
             // Convert the hexcode to an integer value
             return hexcode.HexToInteger();
+        }
+
+        /// <summary>
+        /// Converts a UnityEngine.Color object to an integer representation.
+        /// </summary>
+        /// <param name="color">The UnityEngine.Color object to convert.</param>
+        /// <returns>An integer representation of the color.</returns>
+        public static int ToInteger(this Color color)
+        {
+            System.Drawing.Color temp = System.Drawing.Color.FromArgb(
+                (int)(color.r * 255),
+                (int)(color.g * 255),
+                (int)(color.b * 255)
+            );
+            return temp.ToInteger();
         }
 
         /// <summary>
